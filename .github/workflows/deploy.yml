@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:  # This allows manual triggering of the workflow
 
 jobs:
   build-deploy:
@@ -20,22 +21,22 @@ jobs:
 
     - name: Build Frontend Docker image
       run: |
-        docker build -t muhammadhassaan43/web_projects:frontend-latest ./frontend
+        docker build -t muhammadhassaan43/web_project:frontend-latest ./frontend
 
     - name: Build Backend Docker image
       run: |
-        docker build -t muhammadhassaan43/web_projects:backend-latest ./backend
+        docker build -t muhammadhassaan43/web_project:backend-latest ./backend
 
     - name: Login to Docker Hub
       run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
     - name: Push Frontend Docker image to Docker Hub
-      run: docker push muhammadhassaan43/web_projects:frontend-latest
+      run: docker push muhammadhassaan43/web_project:frontend-latest
 
     - name: Push Backend Docker image to Docker Hub
-      run: docker push muhammadhassaan43/web_projects:backend-latest
+      run: docker push muhammadhassaan43/web_project:backend-latest
 
     - name: Deploy to Minikube
       run: |
-        kubectl apply -f k8s/deployment.yaml
-        kubectl apply -f k8s/service.yaml
+        kubectl apply -f deployment.yaml
+        kubectl apply -f service.yaml
