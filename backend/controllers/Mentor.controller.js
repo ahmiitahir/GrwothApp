@@ -1,6 +1,6 @@
-import Mentor from '../models/Mentor.Model.js';
+import Mentor from '../models/Mentor.model.js';
 import Event from '../models/Event.Model.js';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { processFiles, processFile, cleanupTempFiles } from '../utils/fileHelpers.js';
 import Student from '../models/Student.model.js';
 import jwt from 'jsonwebtoken';

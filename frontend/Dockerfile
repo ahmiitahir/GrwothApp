@@ -1,20 +1,20 @@
-# Stage 1: Build
-FROM node:18-slim AS builder
+# Use an official Node.js runtime as a parent image
+FROM node:18
 
+# Set the working directory in the container
 WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package*.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application code
 COPY . .
 
-# Clean up potentially corrupted dependencies
-RUN rm -rf node_modules package-lock.json
+# Expose the port that the app will run on
+EXPOSE 3000
 
-# Install fresh deps and build
-RUN npm install
-RUN npm run build
-
-# Stage 2: Serve via Nginx
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY ./nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+# Run the application
+CMD ["npm", "run", "dev"]
